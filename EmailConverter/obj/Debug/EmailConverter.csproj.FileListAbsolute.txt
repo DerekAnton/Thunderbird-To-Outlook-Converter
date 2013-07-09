@@ -1,0 +1,6 @@
+C:\Users\Public\Workspace\Gary's Project\EmailConverter\EmailConverter\bin\Debug\EmailConverter.exe.config
+C:\Users\Public\Workspace\Gary's Project\EmailConverter\EmailConverter\bin\Debug\EmailConverter.exe
+C:\Users\Public\Workspace\Gary's Project\EmailConverter\EmailConverter\bin\Debug\EmailConverter.pdb
+C:\Users\Public\Workspace\Gary's Project\EmailConverter\EmailConverter\obj\Debug\EmailConverter.csprojResolveAssemblyReference.cache
+C:\Users\Public\Workspace\Gary's Project\EmailConverter\EmailConverter\obj\Debug\EmailConverter.exe
+C:\Users\Public\Workspace\Gary's Project\EmailConverter\EmailConverter\obj\Debug\EmailConverter.pdb
