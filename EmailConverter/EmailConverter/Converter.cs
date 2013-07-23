@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace EmailConverter
 {
@@ -9,10 +10,12 @@ namespace EmailConverter
         public string inputFileName = "";
         public string inputDumpFileName = "";
         public string liveHolder = "";
+        public string currentContact = "";
         public string loadDirctoryPath = AppDomain.CurrentDomain.BaseDirectory + "\\LoadFrom\\";
         public string dumpDirectoryPath = AppDomain.CurrentDomain.BaseDirectory + "\\DumpTo\\";
         public string outlooksTitleBar = "\"Title\",\"First Name\",\"Middle Name\",\"Last Name\",\"Suffix\",\"Company\",\"Department\",\"Job Title\",\"Business Street\",\"Business Street 2\",\"Business Street 3\",\"Business City\",\"Business State\",\"Business Postal Code\",\"Business Country/Region\",\"Home Street\",\"Home Street 2\",\"Home Street 3\",\"Home City\",\"Home State\",\"Home Postal Code\",\"Home Country/Region\",\"Other Street\",\"Other Street 2\",\"Other Street 3\",\"Other City\",\"Other State\",\"Other Postal Code\",\"Other Country/Region\",\"Assistant's Phone\",\"Business Fax\",\"Business Phone\",\"Business Phone 2\",\"Callback\",\"Car Phone\",\"Company Main Phone\",\"Home Fax\",\"Home Phone\",\"Home Phone 2\",\"ISDN\",\"Mobile Phone\",\"Other Fax\",\"Other Phone\",\"Pager\",\"Primary Phone\",\"Radio Phone\",\"TTY/TDD Phone\",\"Telex\",\"Account\",\"Anniversary\",\"Assistant's Name\",\"Billing Information\",\"Birthday\",\"Business Address PO Box\",\"Categories\",\"Children\",\"Directory Server\",\"E-mail Address\",\"E-mail Type\",\"E-mail Display Name\",\"E-mail 2 Address\",\"E-mail 2 Type\",\"E-mail 2 Display Name\",\"E-mail 3 Address\",\"E-mail 3 Type\",\"E-mail 3 Display Name\",\"Gender\",\"Government ID Number\",\"Hobby\",\"Home Address PO Box\",\"Initials\",\"Internet Free Busy\",\"Keywords\",\"Language\",\"Location\",\"Manager's Name\",\"Mileage\",\"Notes\",\"Office Location\",\"Organizational ID Number\",\"Other Address PO Box\",\"Priority\",\"Private\",\"Profession\",\"Referred By\",\"Sensitivity\",\"Spouse\",\"User 1\",\"User 2\",\"User 3\",\"User 4\",\"Web Page\"";
         public bool moreFilesToCheck = true;
+
 
         public static void Main(string[] args) // Main thread of execution 
         {
@@ -48,8 +51,23 @@ namespace EmailConverter
 
             // REMOVES bad string char values // 
             removeExtraChars();
-            // WRITE //
-            writeToFile(liveHolder);
+
+            
+            
+            
+            string[] newHolder = new string[36];
+            newHolder = delimitCommas(liveHolder);
+
+            string outputString = "";
+
+            for (int counter = 0; counter < 36; counter++)
+            {
+                outputString += (newHolder[counter] + System.Environment.NewLine);
+            }
+
+            writeToFile(outputString);
+                // WRITE //
+               // writeToFile(liveHolder);
         }
 
 
@@ -61,21 +79,34 @@ namespace EmailConverter
             liveHolder = liveHolder.Replace("\'", "");
         }
 
-        public string[] delimitCommas() // get
+        public string[] delimitCommas(string intake) // get
         {
-            string[] holder = new string[36];
+            string[] contactInfo = new string[36]; //  this must have more space because it only takes the first 36 comma seperated values. that's bad....
             char delimiter = ',';
-
-            holder = liveHolder.Split(delimiter);
+            contactInfo = intake.Split(delimiter);
 
             int counter = 0;
-            foreach (string x in holder)
+            foreach (string value in contactInfo)
             {
-                holder[counter] = "\"" + x + "\",";
+                contactInfo[counter] = "\"" + value + "\",";
                 counter++;
             }
+            return contactInfo;
+        }
 
-            return holder;
+        public LinkedList<string> processSingleContact(string intake)
+        {
+            LinkedList<string> separatedContacts = new LinkedList<string>();
+
+            string[] lines = intake.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+            foreach (string contact in lines)
+                separatedContacts.AddLast(contact);
+
+            foreach (string contact in separatedContacts)
+                Console.WriteLine(contact);
+
+            return separatedContacts;
         }
 
         public void writeToFile(string createMe) // Writes new file to disk in dump directory
